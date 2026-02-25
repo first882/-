@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ร้านเจ๊จอย</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Sarabun:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --cream: #f5efe6;
+      --dark: #1a1208;
+      --brown: #6b3d14;
+      --gold: #c8922a;
+      --rust: #a0431f;
+      --light: #faf6f0;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Sarabun', sans-serif;
+      background: var(--light);
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.2rem 3rem;
+      background: rgba(250,246,240,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(200,146,42,0.2);
+    }
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--brown);
+      letter-spacing: 0.05em;
+    }
+    .logo span { color: var(--gold); font-style: italic; }
+    nav ul { list-style: none; display: flex; gap: 2.5rem; }
+    nav a {
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--dark);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+    nav a:hover { color: var(--gold); }
+    .nav-cta {
+      background: var(--rust);
+      color: #fff !important;
+      padding: 0.55rem 1.4rem;
+      border-radius: 2px;
+    }
+    .nav-cta:hover { background: var(--brown); color: #fff !important; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding-top: 80px;
+    }
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 5rem 3rem 5rem 5rem;
+      position: relative;
+    }
+    .hero-tag {
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 5vw, 4.5rem);
+      line-height: 1.1;
+      color: var(--dark);
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--rust);
+    }
+    .hero p {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: #5a4030;
+      max-width: 420px;
+      margin-bottom: 2.5rem;
+    }
+    .btn-group { display: flex; gap: 1rem; align-items: center; }
+    .btn-primary {
+      background: var(--rust);
+      color: #fff;
+      padding: 0.9rem 2.2rem;
+      font-family: 'Sarabun', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+      text-decoration: none;
+    }
+    .btn-primary:hover { background: var(--brown); transform: translateY(-2px); }
+    .btn-secondary {
+      color: var(--brown);
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .btn-secondary::after { content: '→'; }
+    .btn-secondary:hover { color: var(--rust); }
+
+    .hero-right {
+      position: relative;
+      overflow: hidden;
+      background: var(--brown);
+    }
+    .hero-img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0.85;
+      mix-blend-mode: multiply;
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(107,61,20,0.4) 0%, rgba(26,18,8,0.6) 100%);
+    }
+    .hero-badge {
+      position: absolute;
+      bottom: 3rem; left: 3rem;
+      background: var(--gold);
+      color: var(--dark);
+      padding: 1.2rem 1.6rem;
+      font-family: 'Playfair Display', serif;
+    }
+    .hero-badge .big { font-size: 2rem; font-weight: 700; display: block; }
+    .hero-badge .small { font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; }
+
+    /* MARQUEE */
+    .marquee-wrap {
+      background: var(--dark);
+      padding: 1rem 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .marquee-track {
+      display: inline-block;
+      animation: marquee 22s linear infinite;
+    }
+    .marquee-track span {
+      color: var(--cream);
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 0 2.5rem;
+    }
+    .marquee-track span.dot { color: var(--gold); }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ABOUT */
+    .about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    .about-img-wrap {
+      position: relative;
+      min-height: 500px;
+      overflow: hidden;
+    }
+    .about-img-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .about-content {
+      padding: 5rem 5rem 5rem 4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: var(--cream);
+    }
+    .section-tag {
+      font-size: 0.72rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+    .about-content h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 3vw, 3rem);
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+      color: var(--dark);
+    }
+    .about-content p {
+      font-size: 1rem;
+      line-height: 1.9;
+      color: #5a4030;
+      margin-bottom: 1rem;
+    }
+    .stats {
+      display: flex;
+      gap: 2.5rem;
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(200,146,42,0.3);
+    }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      color: var(--rust);
+      font-weight: 700;
+    }
+    .stat-label { font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; color: #7a5a40; }
+
+    /* MENU */
+    .menu-section {
+      padding: 6rem 5rem;
+      background: var(--light);
+    }
+    .section-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+    .section-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 3.5vw, 3.2rem);
+      margin-bottom: 0.5rem;
+    }
+    .section-header p { color: #7a5a40; max-width: 500px; margin: 0 auto; line-height: 1.7; }
+
+    .menu-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 3rem;
+      border: 1px solid var(--gold);
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .tab {
+      flex: 1;
+      padding: 0.7rem 1.5rem;
+      border: none;
+      background: transparent;
+      font-family: 'Sarabun', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      color: var(--brown);
+      transition: all 0.3s;
+    }
+    .tab.active { background: var(--gold); color: var(--dark); font-weight: 600; }
+    .tab:hover:not(.active) { background: rgba(200,146,42,0.12); }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .menu-card {
+      background: #fff;
+      overflow: hidden;
+      border: 1px solid rgba(200,146,42,0.15);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .menu-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(107,61,20,0.15); }
+    .menu-card-img {
+      width: 100%; height: 220px;
+      object-fit: cover;
+    }
+    .menu-card-body { padding: 1.4rem; }
+    .menu-card-body h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      margin-bottom: 0.4rem;
+    }
+    .menu-card-body p { font-size: 0.88rem; color: #7a5a40; line-height: 1.6; margin-bottom: 1rem; }
+    .menu-card-footer {
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .price {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--rust);
+    }
+    .tag-spicy {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: #fff0e8;
+      color: var(--rust);
+      padding: 0.2rem 0.6rem;
+      border: 1px solid rgba(160,67,31,0.3);
+    }
+    .tag-chef {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: #fef9ea;
+      color: var(--gold);
+      padding: 0.2rem 0.6rem;
+      border: 1px solid rgba(200,146,42,0.3);
+    }
+
+    /* GALLERY STRIP */
+    .gallery {
+      display: flex;
+      height: 320px;
+      overflow: hidden;
+    }
+    .gallery div {
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+    }
+    .gallery div img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+    
+
+    /* RESERVATION */
+    .reservation {
+      padding: 7rem 5rem;
+      background: var(--dark);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    .reservation-text h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      color: var(--cream);
+      margin-bottom: 1rem;
+    }
+    .reservation-text h2 em { color: var(--gold); font-style: italic; }
+    .reservation-text p { color: #c8b49a; line-height: 1.8; margin-bottom: 2rem; }
+    .info-list { display: flex; flex-direction: column; gap: 1rem; }
+    .info-item { display: flex; gap: 1rem; align-items: flex-start; }
+    .info-icon { color: var(--gold); font-size: 1.1rem; margin-top: 0.1rem; }
+    .info-text strong { color: var(--cream); display: block; font-size: 0.85rem; letter-spacing: 0.05em; }
+    .info-text span { color: #a08060; font-size: 0.88rem; }
+
+    .reservation-form { display: flex; flex-direction: column; gap: 1.2rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-group label {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(200,146,42,0.3);
+      color: var(--cream);
+      padding: 0.85rem 1rem;
+      font-family: 'Sarabun', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: #7a5a40; }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--gold); }
+    .form-group select option { background: var(--dark); }
+    .form-group textarea { resize: vertical; min-height: 90px; }
+    .btn-reserve {
+      background: var(--gold);
+      color: var(--dark);
+      padding: 1rem 2rem;
+      font-family: 'Sarabun', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+      margin-top: 0.5rem;
+    }
+    .btn-reserve:hover { background: #e0a830; transform: translateY(-2px); }
+
+    /* FOOTER */
+    footer {
+      background: #0e0a04;
+      padding: 3rem 5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(200,146,42,0.15);
+    }
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: var(--cream);
+    }
+    .footer-logo span { color: var(--gold); font-style: italic; }
+    footer p { color: #6a4a2a; font-size: 0.85rem; }
+    .social { display: flex; gap: 1rem; }
+    .social a {
+      width: 38px; height: 38px;
+      border: 1px solid rgba(200,146,42,0.3);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold);
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+    .social a:hover { background: var(--gold); color: var(--dark); }
+
+    /* ANIMATIONS */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      nav ul { display: none; }
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-left { padding: 5rem 2rem 3rem; }
+      .hero-right { height: 350px; }
+      .about, .reservation { grid-template-columns: 1fr; }
+      .about-img-wrap { min-height: 280px; }
+      .about-content, .reservation, .menu-section { padding: 3rem 1.5rem; }
+      .reservation-text { text-align: center; }
+      .menu-grid { grid-template-columns: 1fr 1fr; }
+      .gallery { height: 200px; }
+      footer { flex-direction: column; gap: 1.5rem; text-align: center; padding: 2rem 1.5rem; }
+    }
+    @media (max-width: 600px) {
+      .menu-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 2.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">ร้านเจ๊จอย</span></div>
+  <ul>
+    <li><a href="#about">เกี่ยวกับเรา</a></li>
+    <li><a href="#menu">เมนู</a></li>
+    
+    
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    
+    <h1>ไม้เดียวไม่เคยพอ ต้องขอเพิ่ม<br/><em>อร่อยจนต้องกลับมาซ้ำ</em><br/></h1>
+    
+    <div class="btn-group">
+      <a href="#menu" class="btn-primary">ดูเมนู</a>
+      
+    </div>
+  </div>
+  <div class="hero-right">
+    <img class="hero-img" src="https://cdn.discordapp.com/attachments/1383504392090554449/1475745110221262889/image.png?ex=699e9a3c&is=699d48bc&hm=0d5bf537cc51ebfbb11ab3e6c8b964d09fb8bcbf75e234a0d9e2910ba69544e7&" alt="อาหารไทย"/>
+    <div class="hero-overlay"></div>
+    
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span>ลูกชิ้นทอด</span><span class="dot">✦</span>
+    <span>ลูกชิ้นนึ่ง</span><span class="dot">✦</span>
+    <span>เฟรนฟราย</span><span class="dot">✦</span>
+    <span>น่องไก่ทอด</span><span class="dot">✦</span>
+    <span>นักเก็ต</span><span class="dot">✦</span>
+    <span>ซาลาเปา</span><span class="dot">✦</span>
+    <span>ไก่ชีด</span><span class="dot">✦</span>
+    <span>ปีกไก่ทอด</span><span class="dot">✦</span>
+    
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-img-wrap">
+    <video  controls>
+  <source src="https://cdn.discordapp.com/attachments/1383504392090554449/1475878568184778937/lv_0_20260224223242.mp4?ex=699f1687&is=699dc507&hm=27aeb9514712e5786e2813fb7f33cee71414d4a4839566e911b4b52dcbb2663c&" type="video/mp4">
+ 
+</video>
+  </div>
+  <div class="about-content">
+    <p class="section-tag">✦ เรื่องราวของเรา</p>
+    <h2 class="fade-up">ร้านเจ๊จอย<br/>ตั้งแต่ปี 2560</h2>
+    <p class="fade-up">มันก็เป็นหนึ่งอาชีพที่เราชอบเลยเราที่จะเลือกขายของในสถานที่โรงเรียน ส่วนเปิดมาได้9ปีแล้วแล้วก็จะเปิดต่อไป</p>
+    
+    <div class="stats fade-up">
+      
+      <div>
+        <div class="stat-num">5.0★</div>
+        <div class="stat-label">คะแนนรีวิว</div>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section class="menu-section" id="menu">
+  <div class="section-header fade-up">
+    <h2>✦ เมนูแนะนำ</h2>
+  </div>
+
+  <div class="menu-tabs">
+    <button class="tab active" onclick="filterMenu(this, 'all')">ทั้งหมด</button>
+    <button class="tab" onclick="filterMenu(this, 'fry')">ทอด</button>
+    <button class="tab" onclick="filterMenu(this, 'steam')">นึ่ง</button>
+    
+  </div>
+
+  <div class="menu-grid" id="menuGrid">
+   
+  </div>
+</section>
+
+
+
+
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">ร้าน<span>เจ๊จอย</span></div>
+  <p>© 2024 ร้านเจ๊จอย. สงวนลิขสิทธิ์.</p>
+  <div class="social">
+    <a href="#">f</a>
+    <a href="#">ig</a>
+    <a href="#">yt</a>
+  </div>
+</footer>
+
+<script>
+  // Menu data
+  const menuItems = [
+    { name: 'ลูกชิ้นทอด', desc: 'ไม้ล่ะ10', price: '10บาท/ไม้', img: 'https://cdn.discordapp.com/attachments/1383504392090554449/1475743586179092600/06-FINNIX-Content-SEO-June-Contents-cover-1.webp?ex=699e98d0&is=699d4750&hm=3cd95f18b6acf3a1a35e770d4cac5fd0c0b17751033bb24bbc4e5a74c42c8df6&',  cat: 'fry' },
+    { name: 'ลูกชิ้นนึ่ง', desc: 'ไม้ล่ะ10', price: '10บาท/ไม้', img: 'https://img.wongnai.com/p/1920x0/2021/04/20/350b9036c42248aa8c77386ac0748431.jpg',  cat: 'steam' },
+    { name: 'เฟรนฟราย', desc: 'ผงให้เลือก ชีด ไก่แซบ พิซซา ข้าวโพด <p>ซอสให้เลือก ซอสมะเขือเทศ  ซอสพริก', price: '25บาท', img: 'https://static.cdntap.com/tap-assets-prod/wp-content/uploads/sites/25/2022/03/how-to-cook-french-fries-1.jpg?width=700&quality=95',  cat: 'fry' },
+    { name: 'น่องไก่ทอด', desc: 'ผงให้เลือก ชีด ไก่แซบ พิซซา ข้าวโพด <p>ซอสให้เลือก ซอสมะเขือเทศ  ซอสพริก', price: '25บาท', img: 'https://i.ytimg.com/vi/w31uvv0tJA0/maxresdefault.jpg',  cat: 'fry' },
+    { name: 'นักเก็ต', desc: 'ผงให้เลือก ชีด ไก่แซบ พิซซา ข้าวโพด <p>ซอสให้เลือก ซอสมะเขือเทศ  ซอสพริก', price: '5บาท/ชิ้น', img: 'https://inwfile.com/s-ga/s6oacs.jpg',  cat: 'fry' },
+    { name: 'ซาลาเปา', desc: 'มีไส้ครีม ไส้หมูสับ', price: '10บาท/ลูก', img: 'https://s359.kapook.com/pagebuilder/d8915d20-d70f-4f9f-8778-0c440b51ced9.jpg',  cat: 'steam' },
+    { name: 'ไก่ชีด', desc: 'ผงให้เลือก ชีด ไก่แซบ พิซซา ข้าวโพด <p>ซอสให้เลือก ซอสมะเขือเทศ  ซอสพริก', price: '18บาท/ชิ้น', img: 'https://png.pngtree.com/png-vector/20250812/ourmid/pngtree-crispy-cheese-stuffed-chicken-cutlet-png-image_17147956.webp',  cat: 'fry' },
+    { name: 'ปีกไก่ทอด', desc: 'ผงให้เลือก ชีด ไก่แซบ พิซซา ข้าวโพด', price: '5บาท/ชิ้น', img: 'https://f.ptcdn.info/486/080/000/rtxifs239ha4BOQnkfOX1-s.jpg',  cat: 'fry' },
+    
+  ];
+
+  let currentCat = 'all';
+
+  function renderMenu(cat) {
+    const grid = document.getElementById('menuGrid');
+    const filtered = cat === 'all' ? menuItems : menuItems.filter(i => i.cat === cat);
+    grid.innerHTML = filtered.map(item => `
+      <div class="menu-card fade-up">
+        <img class="menu-card-img" src="${item.img}" alt="${item.name}"/>
+        <div class="menu-card-body">
+          <h3>${item.name}</h3>
+          <p>${item.desc}</p>
+          <div class="menu-card-footer">
+            <span class="price">${item.price}</span>
+            ${item.tag === 'spicy' ? '<span class="tag-spicy">🌶 เผ็ด</span>' : item.tag === 'chef' ? '<span class="tag-chef">★ Chef\'s Pick</span>' : '<span></span>'}
+          </div>
+        </div>
+      </div>
+    `).join('');
+    observeFadeUp();
+  }
+
+  function filterMenu(btn, cat) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    currentCat = cat;
+    renderMenu(cat);
+  }
+
+  function handleReserve(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.btn-reserve');
+    btn.textContent = '✓ รับการจองแล้ว! ขอบคุณครับ/ค่ะ';
+    btn.style.background = '#4a8a5a';
+    btn.style.color = '#fff';
+    setTimeout(() => {
+      btn.textContent = '✦ ยืนยันการจอง';
+      btn.style.background = '';
+      btn.style.color = '';
+      e.target.reset();
+    }, 4000);
+  }
+
+  // Scroll animation
+  function observeFadeUp() {
+    const els = document.querySelectorAll('.fade-up:not(.visible)');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+    }, { threshold: 0.15 });
+    els.forEach(el => obs.observe(el));
+  }
+
+  renderMenu('all');
+  observeFadeUp();
+</script>
+</body>
+</html>
